@@ -3,9 +3,7 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 app = Flask(__name__)
 
 # konfiguracja aplikacji
-app.config.update(dict(
-    SECRET_KEY='bradzosekretnawartosc', #aby przegladarka korzystala z sesji
-))
+app.config.update(dict(SECRET_KEY='bradzosekretnawartosc',)) #aby przegladarka korzystala z sesji
  
 # lista pytań
 DANE = [{

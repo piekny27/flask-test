@@ -1,4 +1,5 @@
-from flask import Flask
+from fileinput import filename
+from flask import Flask, current_app, url_for, request
 from markupsafe import escape
 
 app = Flask(__name__)
@@ -23,4 +24,42 @@ def index():
 def projects():
     return "Projects:"
 
-#url_for????
+#url_for?????????????????
+@app.route("/calculate<int:variableA><string:operation><int:variableB>")
+def calculate(operation,variableA, variableB):
+    wynik=0
+    if operation == "add":
+        wynik = variableA+variableB
+    elif operation == "subtract":
+        wynik = variableA-variableB
+    elif operation == "multiply":
+        wynik = variableA*variableB
+    else:
+        return "Błędne działanie"
+    return f"Wynik {operation} wynosi: {wynik}"
+
+@app.route('/users/<username>')
+def profile(username):
+    return f"{username}\'s profile"
+
+with app.test_request_context(): #potrzebne do testowania url_for
+    #url_for zwraca app.route wywołanej funkcji z parametrami np. profile lub login
+    #ale po co to ja nie wiem edit:już wiem
+    print(url_for('profile', username='John Doe'))
+    print(url_for("calculate", operation="add", variableA=333, variableB=555))
+
+#????????????????????????
+
+#metody HTTP
+@app.route("/methods", methods=["GET","POST"]) #HEAD, PUT,DELETE,OPTIONS, TRACE, CONNECT, PATCH
+def methods():
+    if request.method == "POST":
+        return "Metoda POST"
+    else:
+        return "Metoda GET"
+
+#pliki statyczne
+with app.test_request_context():
+    print(url_for("static",filename="cloud01.png"))
+
+#szablony renderowania
